@@ -12,6 +12,14 @@
             text: 'Serpent'
             id: serpent_area
 
-        Button:
-            text: 'Press me'
-            on_press: root.do_press()
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: 10
+
+            Button:
+                text: 'Connect Toggle'
+                on_press: root.do_press()
+
+            Button:
+                text: 'Stop'
+                on_press: root.do_stop()

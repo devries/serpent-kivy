@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
+import comcycle
 
 class SerpentUI(FloatLayout):
     def do_touch(self,touch):
@@ -11,16 +12,23 @@ class SerpentUI(FloatLayout):
 
         xf = float(x-xmin)/width
         yf = float(y-ymin)/height
-        print "Area touched: %f,%f"%(xf,yf)
+        if xf>=0.0 and yf>=0.0 and xf<1.0 and yf<1.0:
+            self.pattern.touch_point(1.0-yf,xf)
+            print "Area touched: %f,%f"%(xf,yf)
 
     def do_press(self):
-        print "Button Pressed"
+        ipaddr = '192.168.10.88'
+        port = 60666
+        self.pattern.connect(ipaddr,port)
+
+    def do_stop(self):
+        self.pattern.stop()
+        exit(0)
 
 class SerpentApp(App):
     def build(self):
         s = SerpentUI()
-        print "Pos:"+repr(s.serpent.pos)
-        print "Size:"+repr(s.serpent.size)
+        s.pattern = comcycle.BillowPattern()
         return s
 
 if __name__=='__main__':
