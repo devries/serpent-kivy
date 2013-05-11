@@ -1,0 +1,17 @@
+#:kivy 1.5.0
+
+<SerpentUI>:
+    serpent: serpent_area
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+
+        Label:
+            on_touch_down: root.do_touch(args[1])
+            text: 'Serpent'
+            id: serpent_area
+
+        Button:
+            text: 'Press me'
+            on_press: root.do_press()
