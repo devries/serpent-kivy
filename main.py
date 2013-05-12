@@ -25,6 +25,15 @@ class SerpentUI(FloatLayout):
         self.pattern.stop()
         exit(0)
 
+    def set_red(self,red):
+        self.pattern.red=red
+
+    def set_green(self,green):
+        self.pattern.green=green
+
+    def set_blue(self,blue):
+        self.pattern.blue=blue
+
 class SerpentApp(App):
     def build(self):
         s = SerpentUI()

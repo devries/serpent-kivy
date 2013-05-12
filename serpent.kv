@@ -7,10 +7,43 @@
         orientation: 'vertical'
         padding: 20
 
-        Label:
+        #Label:
+        #    on_touch_down: root.do_touch(args[1])
+        #    text: 'Serpent'
+        #    id: serpent_area
+
+        BoxLayout:
+            orientation: 'horizontal'
             on_touch_down: root.do_touch(args[1])
-            text: 'Serpent'
             id: serpent_area
+            padding: 2
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
+
+            Label:
+                text: 'Segment'
 
         BoxLayout:
             orientation: 'horizontal'
@@ -19,6 +52,27 @@
             Button:
                 text: 'Connect Toggle'
                 on_press: root.do_press()
+
+            Slider:
+                value: 108
+                max: 255
+                orientation: 'vertical'
+                step: 1
+                on_value: root.set_red(args[1])
+
+            Slider:
+                value: 80
+                max: 255
+                orientation: 'vertical'
+                step: 1
+                on_value: root.set_green(args[1])
+
+            Slider:
+                value: 255
+                max: 255
+                orientation: 'vertical'
+                step: 1
+                on_value: root.set_blue(args[1])
 
             Button:
                 text: 'Stop'

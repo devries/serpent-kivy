@@ -5,8 +5,9 @@ import struct
 import collections
 import math
 import time
+import sys
 
-fps = 24.0
+fps = 12.0
 spf = 1.0/fps
 
 pixel_terminator = '\x00'*6
@@ -49,6 +50,10 @@ class CommunicationManager(object):
         else:
             raise RuntimeError('The output thread is stopped')
 
+    def hup(self):
+        while not self.outputQ.empty():
+            self.outputQ.get()
+
     def close(self):
         self.keepRunning = False
         self.outputQ.put('')
@@ -75,7 +80,7 @@ def setup_mapping(pixel_map,y_start,nx,ny,strand_address=0,pixel_start=0,start_d
 def create_julunggul_map():
     pixel_map = {}
     for segment in range(serpent_segments):
-        setup_mapping(pixel_map,segment*serpent_rings_per_segment,serpent_ring_length,serpent_rings_per_segment,segment)
+        setup_mapping(pixel_map,segment*serpent_rings_per_segment,serpent_ring_length,serpent_rings_per_segment,segment+1)
 
     strand_arrays = setup_strands([300]+[serpent_ring_length*serpent_rings_per_segment+18]*(serpent_segments+1))
 
@@ -94,9 +99,10 @@ def set_pixel(strand_arrays,pixel_map,x,y,r,g,b):
     strand_arrays[strand_tuple[0]][strand_tuple[1]] = struct.pack('!BBB',r,g,b)
 
 def send_strands(comm_manager,strand_arrays):
+    #comm_manager.hup()
     for address,pixel_array in enumerate(strand_arrays):
         npix = len(pixel_array)*3+len(pixel_terminator)
-        header = struct.pack('!BBH',address,comm_channel,npix)
+        header = struct.pack('!BBH',address+1,comm_channel,npix)
         comm_manager.send(header)
         comm_manager.send(''.join(pixel_array))
         comm_manager.send(pixel_terminator)
@@ -104,10 +110,11 @@ def send_strands(comm_manager,strand_arrays):
 class BillowPattern(object):
     def __init__(self):
         self.pixel_map,self.strand_arrays = create_julunggul_map()
-        print self.pixel_map
-        print self.strand_arrays
-        self.points = collections.deque(maxlen=30)
+        self.points = collections.deque(maxlen=5)
         self.connection = None
+        self.red = 108
+        self.green = 80
+        self.blue = 255
 
         self.keepRunning = True
         self.processThread = threading.Thread(target=self.go)
@@ -123,20 +130,23 @@ class BillowPattern(object):
 
     def step(self):
         current_rings = list(self.points)
+        if len(current_rings)>5:
+            print >>sys.stderr,"It's supposed to max at 5!"
         for j in range(image_ny):
             for i in range(image_nx):
                 color = [0,0,0]
                 for ring in current_rings:
-                    d = math.sqrt((ring[0]-i)**2+(ring[1]-j)**2)
-                    dev = math.fabs(d-ring[2])
-                    if dev<ring[3]:
-                        color = [(c+r)%255 for c,r in zip(color,ring[4])]
+                    if ring[2]<108.0:
+                        d = math.sqrt((ring[0]-i)**2+(ring[1]-j)**2)
+                        dev = math.fabs(d-ring[2])
+                        if dev<ring[3]:
+                            color = [(c+r)%255 for c,r in zip(color,ring[4])]
 
                 set_pixel(self.strand_arrays,self.pixel_map,i,j,color[0],color[1],color[2])
 
         for ring in current_rings:
-            speed = 0.5
-            fade = 0.9
+            speed = 1.0
+            fade = 0.98
 
             ring[2]+=speed
             ring[4] = [c*fade for c in ring[4]]
@@ -152,14 +162,14 @@ class BillowPattern(object):
 
             if delta<spf:
                 time.sleep(spf-delta)
-            else:
-                print "Behind"
+            #else:
+            #    print "Behind"
 
     def touch_point(self,xf,yf):
         xp = int(math.floor(xf*image_nx))
         yp = int(math.floor(yf*image_ny))
 
-        color = (200,80,255)
+        color = (self.red,self.green,self.blue)
         width = 4.0
         radius = 1.0
 
