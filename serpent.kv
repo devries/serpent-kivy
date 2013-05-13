@@ -1,7 +1,22 @@
 #:kivy 1.5.0
 
+<FingerTouch>:
+    size: 50, 50
+    canvas:
+        Color:
+            rgba: 0.0,0.0,1.0,1.0
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
 <SerpentUI>:
     serpent: serpent_area
+    finger: finger_touch
+
+    FingerTouch:
+        id: finger_touch
+        opacity: 0.0
+        size_hint: None,None
 
     BoxLayout:
         orientation: 'vertical'
@@ -19,31 +34,94 @@
             padding: 2
 
             Label:
-                text: 'Segment'
+                text: 'Head'
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: ''
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
             Label:
-                text: 'Segment'
+                text: 'Tail'
+
+                canvas:
+                    Color:
+                        rgba: 0.4, 0.4, 0.7, 0.5
+                    Rectangle:
+                        size: [p-4 for p in self.size]
+                        pos: [p+2 for p in self.pos]
 
         BoxLayout:
             orientation: 'horizontal'
@@ -77,3 +155,4 @@
             Button:
                 text: 'Stop'
                 on_press: root.do_stop()
+
