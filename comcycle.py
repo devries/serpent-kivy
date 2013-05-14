@@ -26,6 +26,7 @@ class CommunicationManager(object):
         self.outputQ = Queue.Queue()
         
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.settimeout(2.0)
         s.connect((ip_address,port))
         self.socket = s
         
@@ -121,7 +122,10 @@ class BillowPattern(object):
         self.processThread.start()
 
     def connect(self,ipaddress,port):
-        self.connection = CommunicationManager(ipaddress,port)
+        try:
+            self.connection = CommunicationManager(ipaddress,port)
+        except:
+            self.connection = None
 
     def stop(self):
         self.keepRunning = False

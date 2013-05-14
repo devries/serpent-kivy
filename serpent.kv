@@ -9,9 +9,18 @@
             pos: self.pos
             size: self.size
 
+<CLabel>:
+    canvas.before:
+        Color:
+            rgb: self.bgcolor
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
 <SerpentUI>:
     serpent: serpent_area
     finger: finger_touch
+    connection_status: connection_status
 
     FingerTouch:
         id: finger_touch
@@ -127,11 +136,17 @@
             orientation: 'horizontal'
             padding: 10
 
-            Button:
-                text: 'Connect Toggle'
-                on_press: root.do_press()
+            CLabel:
+                id: connection_status
+                text: 'Disconnected'
 
             Slider:
+                canvas:
+                    Color:
+                        rgba: 1.0,0.0,0.0,0.4
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 value: 108
                 max: 255
                 orientation: 'vertical'
@@ -139,6 +154,12 @@
                 on_value: root.set_red(args[1])
 
             Slider:
+                canvas:
+                    Color:
+                        rgba: 0.0,1.0,0.0,0.4
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 value: 80
                 max: 255
                 orientation: 'vertical'
@@ -146,6 +167,12 @@
                 on_value: root.set_green(args[1])
 
             Slider:
+                canvas:
+                    Color:
+                        rgba: 0.0,0.0,1.0,0.4
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
                 value: 255
                 max: 255
                 orientation: 'vertical'

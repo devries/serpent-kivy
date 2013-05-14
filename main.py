@@ -1,13 +1,20 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
+from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
 from kivy.clock import Clock
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, ListProperty
 import comcycle
+
+ipaddr = '10.0.0.101'
+port = 60666
 
 class FingerTouch(Widget):
     def fade(self):
         self.opacity = self.opacity*0.8
+
+class CLabel(Label):
+    bgcolor = ListProperty([0,0,0])
 
 class SerpentUI(FloatLayout):
     finger = ObjectProperty(None)
@@ -27,9 +34,19 @@ class SerpentUI(FloatLayout):
             self.finger.opacity=1.0
 
     def do_press(self):
-        ipaddr = '192.168.10.88'
+        #ipaddr = '192.168.10.88'
+        ipaddr = '10.0.0.101'
         port = 60666
         self.pattern.connect(ipaddr,port)
+
+    def check_connection(self,dt):
+        if self.pattern.connection is None:
+            self.connection_status.text = 'Disconnected'
+            self.connection_status.bgcolor = [1.0,0.0,0.0,1.0]
+            self.pattern.connect(ipaddr,port)
+        else:
+            self.connection_status.text = 'Connected'
+            self.connection_status.bgcolor = [0.0,0.8,0.0,1.0]
 
     def do_stop(self):
         self.pattern.stop()
@@ -50,10 +67,14 @@ class SerpentUI(FloatLayout):
 
 class SerpentApp(App):
     def build(self):
-        s = SerpentUI()
-        s.pattern = comcycle.BillowPattern()
-        Clock.schedule_interval(s.periodic,0.1)
-        return s
+        self.s = SerpentUI()
+        self.s.pattern = comcycle.BillowPattern()
+        Clock.schedule_interval(self.s.periodic,0.1)
+        Clock.schedule_interval(self.s.check_connection,5.0)
+        return self.s
+
+    def on_stop(self):
+        self.s.do_stop()
 
 if __name__=='__main__':
     SerpentApp().run()
