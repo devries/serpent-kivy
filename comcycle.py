@@ -116,6 +116,8 @@ class BillowPattern(object):
         self.red = 108
         self.green = 80
         self.blue = 255
+        self.speed = 1.0
+        self.fade = 0.98
 
         self.keepRunning = True
         self.processThread = threading.Thread(target=self.go)
@@ -130,7 +132,8 @@ class BillowPattern(object):
     def stop(self):
         self.keepRunning = False
         self.processThread.join()
-        self.connection.close()
+        if self.connection:
+            self.connection.close()
 
     def step(self):
         current_rings = list(self.points)
@@ -149,11 +152,8 @@ class BillowPattern(object):
                 set_pixel(self.strand_arrays,self.pixel_map,i,j,color[0],color[1],color[2])
 
         for ring in current_rings:
-            speed = 1.0
-            fade = 0.98
-
-            ring[2]+=speed
-            ring[4] = [c*fade for c in ring[4]]
+            ring[2]+=self.speed
+            ring[4] = [c*self.fade for c in ring[4]]
 
     def go(self):
         while self.keepRunning:

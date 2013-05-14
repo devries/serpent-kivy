@@ -15,7 +15,7 @@ class FingerTouch(Widget):
         self.opacity = self.opacity*0.8
 
 class CLabel(Label):
-    bgcolor = ListProperty([0,0,0])
+    bgcolor = ListProperty([0.6,0,0])
 
 class SerpentUI(FloatLayout):
     finger = ObjectProperty(None)
@@ -43,11 +43,11 @@ class SerpentUI(FloatLayout):
     def check_connection(self,dt):
         if self.pattern.connection is None:
             self.connection_status.text = 'Disconnected'
-            self.connection_status.bgcolor = [1.0,0.0,0.0,1.0]
+            self.connection_status.bgcolor = [0.6,0.0,0.0,1.0]
             self.pattern.connect(ipaddr,port)
         else:
             self.connection_status.text = 'Connected'
-            self.connection_status.bgcolor = [0.0,0.8,0.0,1.0]
+            self.connection_status.bgcolor = [0.0,0.6,0.0,1.0]
 
     def do_stop(self):
         self.pattern.stop()
@@ -66,10 +66,10 @@ class SerpentUI(FloatLayout):
         self.finger.color=[self.pattern.red/255.0,self.pattern.green/255.0,self.pattern.blue/255.0]
 
     def set_speed(self,speed):
-        print "Speed: %f"%speed
+        self.pattern.speed=speed
 
     def set_fade(self,fade):
-        print "Fade: %f"%fade
+        self.pattern.fade=fade
 
     def periodic(self,dt):
         self.finger.fade()
