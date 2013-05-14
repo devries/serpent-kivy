@@ -10,6 +10,7 @@ ipaddr = '10.0.0.101'
 port = 60666
 
 class FingerTouch(Widget):
+    color = ListProperty([0,0,1])
     def fade(self):
         self.opacity = self.opacity*0.8
 
@@ -54,12 +55,15 @@ class SerpentUI(FloatLayout):
 
     def set_red(self,red):
         self.pattern.red=red
+        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
 
     def set_green(self,green):
         self.pattern.green=green
+        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
 
     def set_blue(self,blue):
         self.pattern.blue=blue
+        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
 
     def periodic(self,dt):
         self.finger.fade()

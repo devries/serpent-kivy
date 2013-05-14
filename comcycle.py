@@ -166,8 +166,8 @@ class BillowPattern(object):
 
             if delta<spf:
                 time.sleep(spf-delta)
-            #else:
-            #    print "Behind"
+            else:
+                print "Behind"
 
     def touch_point(self,xf,yf):
         xp = int(math.floor(xf*image_nx))
