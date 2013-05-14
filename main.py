@@ -55,15 +55,21 @@ class SerpentUI(FloatLayout):
 
     def set_red(self,red):
         self.pattern.red=red
-        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
+        self.finger.color=[self.pattern.red/255.0,self.pattern.green/255.0,self.pattern.blue/255.0]
 
     def set_green(self,green):
         self.pattern.green=green
-        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
+        self.finger.color=[self.pattern.red/255.0,self.pattern.green/255.0,self.pattern.blue/255.0]
 
     def set_blue(self,blue):
         self.pattern.blue=blue
-        self.finger.color=[self.pattern.red,self.pattern.green,self.pattern.blue]
+        self.finger.color=[self.pattern.red/255.0,self.pattern.green/255.0,self.pattern.blue/255.0]
+
+    def set_speed(self,speed):
+        print "Speed: %f"%speed
+
+    def set_fade(self,fade):
+        print "Fade: %f"%fade
 
     def periodic(self,dt):
         self.finger.fade()
