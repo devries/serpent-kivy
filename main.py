@@ -6,7 +6,9 @@ from kivy.clock import Clock
 from kivy.properties import ObjectProperty, ListProperty
 import comcycle
 
-ipaddr = '10.0.0.101'
+ipaddr = '10.0.0.101' # test address
+#ipaddr = '192.168.10.88' # Julunggul
+#ipaddr = '192.168.10.89' # Jormungand
 port = 60666
 
 class FingerTouch(Widget):
